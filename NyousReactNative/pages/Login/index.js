@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import {StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({navigation}) =>{
     const [email, setEmail] = useState(' ');
     const [senha, setSenha] = useState(' '); 
+
+    const salvar = async (value) => {
+        try {
+          await AsyncStorage.setItem('@jwt', value)
+        } catch (e) {
+          // saving error
+        }
+      }
 
     const Logar = () => {
 
@@ -25,6 +34,7 @@ const Login = ({navigation}) =>{
             if(data.status != 404){
 
                 alert('Seja bem vindo(a)');
+                salvar(data.token);
                 navigation.push('Autenticado')
             }else{
               
